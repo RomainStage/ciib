@@ -1,7 +1,7 @@
 var util = require('util');
 var https = require('https');
 var fs = require('fs');
-var db = require('./mongoose.js');
+var db = require('./db.js');
 var EventEmitter = require('events').EventEmitter;
 var evenement = new EventEmitter();
 var i = 0;
@@ -439,11 +439,11 @@ evenement.on("html3", function(b, obj){
 							obj.fax = b.query.results.body.div[1].div[1].div[1].div[0].div[0].div[1].div.div[0].p[3].span.content; // todo scheck telgth
 							//--------------------------------------------------------------------
 							fax.push(obj.fax);
-							//fs.writeFile("fax.txt", JSON.stringify(fax), 'utf8', 'a+', function(err){ //TODO
+							/*fs.writeFile("fax.txt", JSON.stringify(fax), 'utf8', 'a+', function(err){ //TODO
 							if(err) throw err;
 							console.log('on a enregister le buffer dans un fichier');
-							}); 
-							 //-----------------------------------------------------------------------
+							});*/ 
+							 //-*----------------------------------------------------------------------
 						 }
 					 }
 				 }
@@ -452,7 +452,8 @@ evenement.on("html3", function(b, obj){
 			 //--------------enregistrement dans la db 
 			 if((obj.fax || obj.tel) && obj.fax.length< 16){
 			 console.log("-- /o/ ---- /o/ ---- /o/ ---- /o/ ---- /o/ ---- /o/ ---- /o/ -- "+ fax.length);
-				db.enregistrement(obj);
+			 	obj.insererPar = "heroku"
+				db.insert(obj);
 			 }
 			
 			console.log(obj);
