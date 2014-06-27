@@ -45,7 +45,7 @@ MongoClient.connect('mongodb://romain:romain@kahana.mongohq.com:10004/ciib_stage
 	
     collection.insert(data, function(err, docs) {
     if (err){//si il y a un doublon, on supprime le doc et on le crée
-    	collection.remove({email:data.email},function(err){
+    	collection.remove({fax:data.fax},function(err){
     	if (err){//si erreur de suppression
     		console.log("erreur de suppression : "+err);
     		res.end(JSON.stringify({message: "ko"}));
