@@ -34,7 +34,7 @@ MongoClient.connect('mongodb://romain:romain@kahana.mongohq.com:10004/ciib_stage
    	
 })};//créer collection avec index, clef sur mail
 
-exports.insert = function(data, res){//inserer le formulaire  
+exports.insert = function(data){//inserer le formulaire  
 MongoClient.connect('mongodb://heroku:heroku@kahana.mongohq.com:10004/ciib_stage', function(err, db) {
     if(err) throw err;
 	
@@ -45,19 +45,19 @@ MongoClient.connect('mongodb://heroku:heroku@kahana.mongohq.com:10004/ciib_stage
 	
     collection.insert(data, function(err, docs) {
     if (err){//si il y a un doublon, on supprime le doc et on le crée
-    	collection.remove({fax:data.fax},function(err){
+    	collection.remove({dax:data.fax},function(err){
     	if (err){//si erreur de suppression
     		console.log("erreur de suppression : "+err);
-    		res.end(JSON.stringify({message: "ko"}));
+    		//res.end(JSON.stringify({message: "ko"}));
     	}
     	else{ 
 			collection.insert(data,function(err){
 			if (err){//si erreur d'insertion
 				console.log('mis a jour erreur : '+err);
-				res.end(JSON.stringify({message: "ko"}));
+				//res.end(JSON.stringify({message: "ko"}));
 			}
 			else {
-			res.end(JSON.stringify({message: "ok"}));
+			//res.end(JSON.stringify({message: "ok"}));
 			console.log("MaJ ok");
 			}
     		});
@@ -68,7 +68,7 @@ MongoClient.connect('mongodb://heroku:heroku@kahana.mongohq.com:10004/ciib_stage
     }else{
         collection.count(function(err, count) {
             console.log(format("count = %s", count));
-            res.end(JSON.stringify({message: "ok"}));
+            //res.end(JSON.stringify({message: "ok"}));
             db.close();
         });
     }
