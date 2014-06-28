@@ -20,28 +20,3 @@ server.receive_request = function (req, resp) { server.r.router(req, resp);
 http.createServer(server.receive_request).listen(server.port, server.address);
 util.log("INFO - Server started, listening " + server.address + ":" + server.port);
 
-var http = require('http'); //importing http
-
-function startKeepAlive() {
-    setInterval(function() {
-        var options = {
-            host: 'secret-anchorage-4445.herokuapp.com',
-            port: 80,
-            path: '/'
-        };
-        http.get(options, function(res) {
-            res.on('data', function(chunk) {
-                try {
-                    // optional logging... disable after it's working
-                    console.log("HEROKU RESPONSE: " + chunk);
-                } catch (err) {
-                    console.log(err.message);
-                }
-            });
-        }).on('error', function(err) {
-            console.log("Error: " + err.message);
-        });
-    }, 20 * 60 * 1000); // load every 20 minutes
-}
-
-startKeepAlive();
