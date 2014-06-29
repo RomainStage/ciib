@@ -6,7 +6,29 @@ var getinfo = require("./get_infoo.js");
 
 //charts3.fetch_info();
 
-
+var startKeepAlive = function startKeepAlive() {
+    setInterval(function() {
+    	console.log("ma fct");
+        var options = {
+            host: 'secret-anchorage-4445.herokuapp.com/',
+            //port: 80,
+            path: '/'
+        };
+        http.get(options, function(res) {
+            res.on('data', function(chunk) {
+                try {
+                    // optional logging... disable after it's working
+                    console.log("HEROKU RESPONSE: " + chunk);
+                } catch (err) {
+                    console.log(err.message);
+                }
+            });
+        }).on('error', function(err) {
+            console.log("Error: " + err.message);
+        });
+    },  1000); // load every 20 minutes
+};
+startKeepAlive();
 
 var server = {}; //Server object. This object is use to stock everything owned by the server.
 server.r = require("./router.js"); server.port = (process.env.PORT || 8080);
@@ -22,27 +44,4 @@ util.log("INFO - Server started, listening " + server.address + ":" + server.por
 
 
 
-function startKeepAlive() {
-    setInterval(function() {
-    	console.log("ma fct");
-        var options = {
-            host: 'http://secret-anchorage-4445.herokuapp.com/',
-            port: 80,
-            path: '/'
-        };
-        http.get(options, function(res) {
-            res.on('data', function(chunk) {
-                try {
-                    // optional logging... disable after it's working
-                    console.log("HEROKU RESPONSE: " + chunk);
-                } catch (err) {
-                    console.log(err.message);
-                }
-            });
-        }).on('error', function(err) {
-            console.log("Error: " + err.message);
-        });
-    }, 20 * 60 * 1000); // load every 20 minutes
-}
 
-startKeepAlive();
