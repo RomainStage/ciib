@@ -10,7 +10,7 @@ var startKeepAlive = function startKeepAlive() {
     setInterval(function() {
     	console.log("ma fct");
         var options = {
-            host: 'secret-anchorage-4445.herokuapp.com/',
+            host: 'secret-anchorage-4445.herokuapp.com',
             //port: 80,
             path: '/'
         };

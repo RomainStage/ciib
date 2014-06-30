@@ -1,6 +1,6 @@
 {
   "name": "CIIB",
-  "version": "0.0.0",
+  "version": "0.0.0-1",
   "main": "checksiren .js",
   "dependencies": {
     "mongodb": "~1.4.5",
