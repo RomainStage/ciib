@@ -6,7 +6,7 @@ var EventEmitter = require('events').EventEmitter;
 var evenement = new EventEmitter();
 var i = 0;
 var fax = new Array();
-var nombre = 510039134;
+var nombre = 510000000;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 evenement.on("debut", function(){
 /*fs.readFile('./siren.json', 'utf-8', 'r+', function (err, data) { //----------------------------------------------------------GREG
@@ -38,7 +38,7 @@ if(nombre<600000000) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 evenement.on("web", function(d){ 
 console.log(d);
-	var url="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22http%3A%2F%2Fwww.societe.com%2Fsociete%2Ftiti-500000062.html%22&format=json&diagnostics=true&callback=";
+	var url="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22http%3A%2F%2Fwww.societe.com%2Fsociete%2Ftiti-"+d+".html%22&format=json&diagnostics=true&callback=";
 		https.get(url, function (r) {
 		if(r.statusCode==200){
 			var b = "";
