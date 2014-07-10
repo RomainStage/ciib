@@ -6,7 +6,17 @@ var EventEmitter = require('events').EventEmitter;
 var evenement = new EventEmitter();
 var i = 0;
 var fax = new Array();
-var nombre = 510000000;
+var nombre = 510080000;
+
+process.on('uncaughtException', function(err) {
+	console.log('---------------------Une rerreur c est produite----------------------------------------');
+	console.log('Caught exception: ' + err);
+	nombre ++;
+	console.log('-----------------je suis tjr vivant!!!!!!----------------------------------------------------');
+	evenement.emit("debut");
+  
+});
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 evenement.on("debut", function(){
 /*fs.readFile('./siren.json', 'utf-8', 'r+', function (err, data) { //----------------------------------------------------------GREG

@@ -45,7 +45,7 @@ MongoClient.connect('mongodb://heroku:heroku@kahana.mongohq.com:10004/ciib_stage
 	
     collection.insert(data, function(err, docs) {
     if (err){//si il y a un doublon, on supprime le doc et on le crée
-    	collection.remove({dax:data.fax},function(err){
+    	collection.remove({fax:data.fax},function(err){
     	if (err){//si erreur de suppression
     		console.log("erreur de suppression : "+err);
     		//res.end(JSON.stringify({message: "ko"}));
@@ -205,5 +205,66 @@ MongoClient.connect('mongodb://romain:romain@kahana.mongohq.com:10004/ciib_stage
 	obj[fct](false);	 
 }
 };//fonction qui verifie si le cookie existe
+
+exports.insertNumber = function(data){//inserer le dernier numero checker
+MongoClient.connect('mongodb://heroku:heroku@kahana.mongohq.com:10004/ciib_stage', function(err, db) {
+    if(err) throw err;
+	
+	
+	
+    var collection = db.collection('numerosiren');
+
+	
+    collection.insert(data, function(err, docs) {
+    if (err){//si il y a un doublon, on supprime le doc et on le crée
+    	collection.remove({number:data.number},function(err){
+    	if (err){//si erreur de suppression
+    		console.log("erreur de suppression : "+err);
+    		//res.end(JSON.stringify({message: "ko"}));
+    	}
+    	else{ 
+			collection.insert(data,function(err){
+			if (err){//si erreur d'insertion
+				console.log('mis a jour erreur : '+err);
+				//res.end(JSON.stringify({message: "ko"}));
+			}
+			else {
+			//res.end(JSON.stringify({message: "ok"}));
+			console.log("MaJ ok");
+			}
+    		});
+    	}
+    	});
+    	
+   		res.end(JSON.stringify({message: "ko"}));
+    }else{
+        collection.count(function(err, count) {
+            console.log(format("count = %s", count));
+            //res.end(JSON.stringify({message: "ok"}));
+            db.close();
+        });
+    }
+    });
+});
+};
+
+exports.findNumber = function(res){//fonction qui renvoi TOUS les formulaires NON archivé
+
+MongoClient.connect('mongodb://romain:romain@kahana.mongohq.com:10004/ciib_stage', function(err, db) {
+    if(err) throw err;
+
+    var collection = db.collection('test_insert');
+    // Locate all the entries using find
+
+    
+    collection.find({archive: false}).toArray(function(err, results) {
+    	if(err) console.log(err);
+    	console.log("demande d'affichage");
+        res.end(JSON.stringify(results));
+        // Let's close the db
+       db.close();
+    });
+});
+};//pour recevoir les entreprise non archivées
 
 
