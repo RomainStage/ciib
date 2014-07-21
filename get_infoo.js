@@ -6,9 +6,43 @@ var EventEmitter = require('events').EventEmitter;
 var evenement = new EventEmitter();
 var i = 0;
 var fax = new Array();
-var nombre = 510080000;
+var nombre ;
+
+
+var MongoClient = require('mongodb').MongoClient
+    , format = require('util').format;
+
+findNumber = function(){//fonction qui renvoi TOUS les formulaires NON archivé
+
+MongoClient.connect('mongodb://romain:romain@kahana.mongohq.com:10004/ciib_stage', function(err, db) {
+    if(err) throw err;
+
+    var collection = db.collection('numerosiren');
+    // Locate all the entries using find
+
+    
+    collection.find({nom: "ciib"}).toArray(function(err, results) {
+    	if(err) console.log(err);
+    	nombre = (results[0].siren);
+    	
+    	evenement.emit("debut");
+       db.close();
+    });
+});
+};//pour recevoir les entreprise non archivées
+
+updateInterval = function(){
+	MongoClient.connect('mongodb://romain:romain@kahana.mongohq.com:10004/ciib_stage', function(err, db) {
+    if(err) throw err;
+    var collection = db.collection('numerosiren');
+    
+    collection.update({ nom: "ciib" },{nom: "ciib",siren: nombre},{ upsert: true },function(err){ if (err) throw err});
+    });
+	
+};
 
 process.on('uncaughtException', function(err) {
+	
 	console.log('---------------------Une rerreur c est produite----------------------------------------');
 	console.log('Caught exception: ' + err);
 	nombre ++;
@@ -17,17 +51,10 @@ process.on('uncaughtException', function(err) {
   
 });
 
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 evenement.on("debut", function(){
-/*fs.readFile('./siren.json', 'utf-8', 'r+', function (err, data) { //----------------------------------------------------------GREG
-	if (err) {
-		console.log("ERROR - " + err);
-	} else if (data) {
-		data = JSON.parse(data);
-		evenement.emit("web", data[i++]); 
-	}
-});*/
-
 
 if(nombre<600000000) {
 	var tmp = nombre.toString();
@@ -473,9 +500,9 @@ evenement.on("html3", function(b, obj){
 		}
 });
 //-----------------------------------------------------------------------------------------------------------------------------
-evenement.emit("debut");
-// evenement.emit("bilans-gratuits", obj);
-// exports.demarrage=server.on;
+//evenement.emit("debut");
+findNumber();
+setInterval(updateInterval,10000);
 
 function checksiren(siren){
 

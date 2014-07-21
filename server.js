@@ -33,6 +33,18 @@ startKeepAlive();
 var server = {}; //Server object. This object is use to stock everything owned by the server.
 server.r = require("./router.js"); server.port = (process.env.PORT || 8080);
 server.address = "0.0.0.0";
+
+
+process.on('uncaughtException', function(err) {
+	var tarace =2;
+	console.log('---------------------Une rerreur c est produite----------------------------------------');
+	console.log('Caught exception: ' + err);
+	nombre ++;
+	console.log('-----------------je suis tjr vivant!!!!!!----------------------------------------------------');
+	evenement.emit("debut");
+  
+});
+
 /**
 * This method is called each times a request arrives on the server * @param req (Object) request object for this request
 * @param resp (Object) response object for this request
