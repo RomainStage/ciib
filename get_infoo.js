@@ -35,8 +35,9 @@ updateInterval = function(){
 	MongoClient.connect('mongodb://romain:romain@kahana.mongohq.com:10004/ciib_stage', function(err, db) {
     if(err) throw err;
     var collection = db.collection('numerosiren');
-    
+    if (nombre){
     collection.update({ nom: "ciib" },{nom: "ciib",siren: nombre},{ upsert: true },function(err){ if (err) throw err});
+    }
     });
 	
 };
